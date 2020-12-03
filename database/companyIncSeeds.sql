@@ -63,7 +63,7 @@ CREATE TABLE employee
   ("Betty", "Welsh", 5, NULL),
   ("Andrew", "Jonathan", 3, NULL),
   ("Cristina", "Thompson", 7, NULL),
-  ("Catalina", "Castillo", 1, 4),
+  ("Catalina", "Castillo", 1, 1),
   ("Andrea", "Lopez", 2, 4),
   ("Marco", "Lopez", 6, 1),
   ("David", "Harris", 4, 2),
