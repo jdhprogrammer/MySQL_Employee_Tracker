@@ -1,8 +1,7 @@
 const figlet = require('figlet');
-const { getBorderCharacters } = require('table');
 const term = require("terminal-kit").terminal;
 
-const start = () => {
+const welcome = () => {
     // console.log("\n");
     term.cyan(figlet.textSync(`welcome to:`, {
         font: 'standard',
@@ -14,10 +13,10 @@ const start = () => {
     console.log("\n");
 };
 
-const exit = () => {
+const goodbye = () => {
     console.log("\n");
-    term.yellow(figlet.textSync('Thank You', {
-        font: 'colossal',
+    term.yellow(figlet.textSync(' Goodbye!', {
+        font: 'standard',
         horizontalLayout: 'full',
         width: 100,
         whitespaceBreak: true
@@ -28,4 +27,7 @@ const exit = () => {
 
 
 // EXPORT MODULE ================================================================================
-module.exports = { start, exit };
+module.exports = {
+    welcome,
+    goodbye
+};
