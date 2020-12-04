@@ -71,4 +71,10 @@ How do you deliver this? Here are some guidelines:
 
 ![Employee Tracker](Assets/employee-tracker.gif)
 
+### References
+
+https://www.npmjs.com/package/figlet
+https://www.npmjs.com/package/terminal-kit
+https://www.mysqltutorial.org/mysql-self-join/
+https://www.mysqltutorial.org/mysql-foreign-key/
 
