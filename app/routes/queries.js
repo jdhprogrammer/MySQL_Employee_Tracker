@@ -6,17 +6,16 @@ class Query {
     }
 
     // "View All Employees":
-    getAllEmployees() {
+    getAllEmployees(id) {
         let query = "SELECT employee.id, first_name, last_name, role.title, department.name,"
         query += "manager_id, salary FROM companyInc_db.employee inner join role inner join "
         query += "department on role.id = employee.role_id AND department.id = "
-        query += "role.department_id order by id ",
+        query += "role.department_id order by ??", [id],
             connection.query(query,
                 function(err, data) {
                     if (err) throw err;
                     console.table(data);
                 })
-        connection.end();
     };
     //    "View All Employees by Department":
     getEmployeesByDepartment() {
