@@ -1,27 +1,20 @@
 // <--!$%#=+ MYSQL_Employee_Tracker +=#%$!--> \\
-let config = require('./library/config.js');
-const mysql = require('mysql');
+
+const Query = require('./app/routes/queries.js')
+
 const inquirer = require('inquirer');
-const banner = require('./library/banner');
+const banner = require('./app/library/banner');
 const term = require("terminal-kit").terminal;
 require('console.table');
 
 
 
-const bigMessage = require('./library/bigMessages');
+const bigMessage = require('./app/library/bigMessages');
 // DISPLAY EMPLOYEE TRACKER WHEN STARTING THE APP ========>
 bigMessage.welcome();
 console.log(banner);
 
-var PORT = process.env.PORT || 9000;
-let connection = mysql.createConnection(config);
-
-connection.connect((err) => {
-    if (err) throw err;
-    welcome();
-
-    connection.end();
-});
+// var PORT = process.env.PORT || 9000;
 
 let runApplication = true;
 
@@ -52,7 +45,7 @@ const welcome = () => {
             console.log(doSomething)
             switch (doSomething.something) {
                 case "View All Employees":
-                    getAllEmployees();
+                    Query.getAllEmployees();
                     break;
                 case "View All Employees by Department":
                     getEmployeesByDepartment();
