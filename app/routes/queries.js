@@ -1,5 +1,3 @@
-const connection = require("../config/connection.js");
-
 class Query {
     constructor(search) {
         this.search = search;
