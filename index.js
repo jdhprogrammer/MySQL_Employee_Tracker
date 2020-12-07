@@ -47,7 +47,7 @@ const application = () => {
                 queryString += "department on role.id = employee.role_id AND department.id = "
                 queryString += "role.department_id order by ??";
                 let promise = new Promise((resolve, reject) => {
-                    connection.query(queryString, [id],
+                    connection.query(queryString, [search],
                         function(err, data) {
                             if (err) throw err;
                             resolve(data);
