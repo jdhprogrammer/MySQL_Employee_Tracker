@@ -77,4 +77,6 @@ https://www.npmjs.com/package/figlet
 https://www.npmjs.com/package/terminal-kit
 https://www.mysqltutorial.org/mysql-self-join/
 https://www.mysqltutorial.org/mysql-foreign-key/
+https://javascript.info/async-await
+https://nodejs.org/dist/latest-v8.x/docs/api/util.html#util_util_promisify_original
 

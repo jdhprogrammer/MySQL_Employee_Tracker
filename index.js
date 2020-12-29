@@ -74,7 +74,7 @@ function application() {
                 roleId,
                 managerId
             }) => {
-                let queryString = "INSERT INTO employee SET ?"
+                let queryString = "INSERT INTO employee SET ?";
                 return connection.query(queryString, {
                     first_name: firstName,
                     last_name: lastName,
@@ -83,29 +83,46 @@ function application() {
                 });
             },
             //    "Remove Employee":
-            deleteEmployee: async() => {
-
+            deleteEmployee: async({ employeeId }) => {
+                let queryString = "DELETE FROM employee WHERE ?";
+                return connection.query(queryString, [
+                    { id: employeeId }
+                ]);
             },
             //    "Update Employee Role":
-            updateEmployeeRole: async() => {
-
+            updateEmployeeRole: async({ roleId, employeeId }) => {
+                let queryString = "UPDATE employee SET ? WHERE ?";
+                return connection.query(queryString, [
+                    { role_id: roleId },
+                    { id: employeeId }
+                ]);
             },
             //    "Update Employee Manager":
-            updateEmployeeManager: async() => {
-
+            updateEmployeeManager: async({ managerId, employeeId }) => {
+                let queryString = "UPDATE employee SET ? WHERE ?";
+                return connection.query(queryString, [
+                    { manager_id: managerId },
+                    { id: employeeId }
+                ]);
             },
             //    "View All Departments":
             getAllDepartments: async(search) => {
-                let queryString = "SELECT * from ??"
+                let queryString = "SELECT * from ??";
                 return connection.query(queryString, search)
             },
             //    "Add Department":
-            postNewDepartment: async() => {
-
+            postNewDepartment: async({ deptName }) => {
+                let queryString = "INSERT INTO department SET ?";
+                return connection.query(queryString, {
+                    name: deptName
+                });
             },
             //    "Remove Department":
-            deleteDepartment: async() => {
-
+            deleteDepartment: async({ deptId }) => {
+                let queryString = "DELETE FROM department WHERE ?";
+                return connection.query(queryString, [
+                    { id: deptId }
+                ]);
             },
             //    "View All Roles":
             getAllRoles: async(search) => {
@@ -117,17 +134,18 @@ function application() {
 
             },
             //    "Remove Role":
-            deleteRole: async() => {
-
+            deleteRole: async({ roleId }) => {
+                let queryString = "DELETE FROM role WHERE ?";
+                return connection.query(queryString, [
+                    { id: roleId }
+                ]);
             },
             //    "View Department Utilized Budget":
             getDepartmentUsedBudget: async() => {
-
+                let queryString = "SELECT d.name, SUM(salary) AS utilized_budget FROM department d"
+                queryString += "LEFT JOIN role r ON r.department_id = d.id GROUP BY d.name;";
+                return connection.query(queryString);
             },
-            //    "Exit":
-            goodbye: async() => {
-
-            }
         }
 
         let runApplication = true;
@@ -256,25 +274,60 @@ function application() {
                     }
                 case "Remove Employee":
                     {
-                        const byManagers = await queries.deleteEmployee();
+                        const employees = await queries.getAllEmployees("employee");
+                        const answers = await inquirer.prompt([{
+                            name: "employeeId",
+                            type: "list",
+                            message: "Choose the employee you would like to delete",
+                            choices: employees.map(({ id, first_name, last_name }) => ({ name: `${first_name} ${last_name}`, value: id }))
+                        }, ])
+                        const removeEmp = await queries.deleteEmployee(answers);
                         console.log("------------------------------------------------------------------------------------");
-                        console.table(byManagers);
+                        console.table(`${removeEmp} was removed successfully.`);
                         console.log("------------------------------------------------------------------------------------");
                         break;
                     }
                 case "Update Employee Role":
                     {
-                        const byManagers = await queries.updateEmployeeRole();
+                        const [roles, employees] = await Promise.all([queries.getAllRoles("role"), queries.getAllEmployees("employee")]);
+                        const answers = await inquirer.prompt([{
+                                name: "employeeId",
+                                type: "list",
+                                message: "Choose the employee for whom you would like to update the role",
+                                choices: employees.map(({ id, first_name, last_name }) => ({ name: `${first_name} ${last_name}`, value: id }))
+                            },
+                            {
+                                name: "roleId",
+                                type: "list",
+                                message: "Select a new role for the employee",
+                                choices: roles.map(({ id, title }) => ({ name: title, value: id }))
+                            },
+                        ])
+                        const roleUpdate = await queries.updateEmployeeRole(answers);
                         console.log("------------------------------------------------------------------------------------");
-                        console.table(byManagers);
+                        console.table(`${first_name} ${last_name} role updated to '${roleUpdate}'`);
                         console.log("------------------------------------------------------------------------------------");
                         break;
                     }
                 case "Update Employee Manager":
                     {
-                        const byManagers = await queries.updateEmployeeManager();
+                        const employees = await queries.getAllEmployees("employee");
+                        const answers = await inquirer.prompt([{
+                                name: "employeeId",
+                                type: "list",
+                                message: "Choose the employee for whom you would like to update the manager",
+                                choices: employees.map(({ id, first_name, last_name }) => ({ name: `${first_name} ${last_name}`, value: id }))
+                            },
+                            {
+                                name: "managerId",
+                                type: "list",
+                                message: "Select a new manager for the employee",
+                                choices: employees.map(({ id, first_name, last_name }) => ({ name: `${first_name} ${last_name}`, value: id }))
+                            },
+                        ]);
+                        const managerUpdate = await queries.updateEmployeeManager(answers);
                         console.log("------------------------------------------------------------------------------------");
-                        console.table(byManagers);
+                        console.table(`${first_name} ${last_name} role updated to '${managerUpdate}'`);
                         console.log("------------------------------------------------------------------------------------");
                         break;
                     }
@@ -288,17 +341,31 @@ function application() {
                     }
                 case "Add Department":
                     {
-                        const byManagers = await queries.postNewDepartment();
+                        const depts = await queries.getAllDepartments("department");
+                        const answers = await inquirer.prompt([{
+                            name: "deptName",
+                            type: "input",
+                            message: "What is the department you would like to add?",
+                            validate: (name) => { for (const dept of depts) { if (dept.name.toLowerCase().split(" ").includes(name.toLowerCase())) { console.log(`\n${name} department already exists`); return false; } } }
+                        }])
+                        const newDept = await queries.postNewDepartment(answers)
                         console.log("------------------------------------------------------------------------------------");
-                        console.table(byManagers);
+                        console.table(`A department "${newDept}" was added successfully!`);
                         console.log("------------------------------------------------------------------------------------");
                         break;
                     }
                 case "Remove Department":
                     {
-                        const byManagers = await queries.deleteDepartment();
+                        const departments = await queries.getAllDepartments("department");
+                        const answers = await inquirer.prompt([{
+                            name: "deptId",
+                            type: "list",
+                            message: "Choose the department you would like to delete",
+                            choices: departments.map(({ id, name }) => ({ name: name, value: id }))
+                        }, ]);
+                        const removeDept = await queries.deleteDepartment(answers);
                         console.log("------------------------------------------------------------------------------------");
-                        console.table(byManagers);
+                        console.table(`Department "${removeDept}" has been removed successfully.`);
                         console.log("------------------------------------------------------------------------------------");
                         break;
                     }
@@ -312,25 +379,54 @@ function application() {
                     }
                 case "Add Role":
                     {
-                        const byManagers = await queries.postNewRole();
+                        const departments = await queries.getAllDepartments("department");
+                        const roles = await queries.getAllRoles("role");
+                        const answers = await inquirer.prompt([{
+                                name: "departmentId",
+                                type: "list",
+                                message: "Which department would you like to add the role to?",
+                                choices: departments.map(({ id, name }) => ({ name: name, value: id }))
+                            },
+                            {
+                                name: "roleName",
+                                type: "input",
+                                message: "What is the role you would like to add?",
+                                validate: (name) => { for (const role of roles) { if (role.title.toLowerCase().split(" ").includes(name.toLowerCase())) { console.log(`\n${name} role already exists`); return false; } } }
+                            },
+                            {
+                                name: "salary",
+                                type: "input",
+                                message: "What is the annual salary for this role?",
+                                validate: (salary) => !isNaN(salary) && /^[0-9]+$/.test(salary) || 'Please enter a valid number.'
+                            }
+                        ])
+                        const newRole = await queries.postNewRole(answers);
                         console.log("------------------------------------------------------------------------------------");
-                        console.table(byManagers);
+                        term.bgBlue.bold.black(`A role "${newRole}" has been added successfully!`);
                         console.log("------------------------------------------------------------------------------------");
+
                         break;
                     }
                 case "Remove Role":
                     {
-                        const byManagers = await queries.deleteRole();
+                        const roles = await queries.getAllRoles("role");
+                        const answers = await inquirer.prompt([{
+                            name: "roleId",
+                            type: "list",
+                            message: "Choose the role you would like to delete",
+                            choices: roles.map(({ id, title }) => ({ name: title, value: id }))
+                        }, ]);
+                        const removeRole = await queries.deleteRole(answers);
                         console.log("------------------------------------------------------------------------------------");
-                        console.table(byManagers);
+                        console.table(`Role "${removeRole}" was removed successfully.`);
                         console.log("------------------------------------------------------------------------------------");
                         break;
                     }
                 case "View Department Utilized Budget":
                     {
-                        const byManagers = await queries.getDepartmentUsedBudget();
+                        const viewBudget = await db.viewDeptBudget();
                         console.log("------------------------------------------------------------------------------------");
-                        console.table(byManagers);
+                        console.table(viewBudget);
                         console.log("------------------------------------------------------------------------------------");
                         break;
                     }
