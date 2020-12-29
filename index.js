@@ -8,14 +8,6 @@ const connection = require('./app/config/connection.js');
 const bigMessage = require('./app/library/bigMessages');
 const banner = require('./app/library/banner');
 
-
-// var mysql = require("mysql");
-
-// Set up our connection information
-
-// Connect to the database
-
-
 // Conditions
 application();
 // Main Application
@@ -68,12 +60,7 @@ function application() {
                 return connection.query(queryString, search)
             },
             //    "Add Employee":
-            postNewEmployee: async({
-                firstName,
-                lastName,
-                roleId,
-                managerId
-            }) => {
+            postNewEmployee: async({ firstName, lastName, roleId, managerId }) => {
                 let queryString = "INSERT INTO employee SET ?";
                 return connection.query(queryString, {
                     first_name: firstName,
@@ -110,12 +97,16 @@ function application() {
                 let queryString = "SELECT * from ??";
                 return connection.query(queryString, search)
             },
+            getDepartment: async(search) => {
+                let queryString = "SELECT name FROM department WHERE ?";
+                return connection.query(queryString, [
+                    { id: search }
+                ]);
+            },
             //    "Add Department":
             postNewDepartment: async({ deptName }) => {
                 let queryString = "INSERT INTO department SET ?";
-                return connection.query(queryString, {
-                    name: deptName
-                });
+                return connection.query(queryString, { name: deptName });
             },
             //    "Remove Department":
             deleteDepartment: async({ deptId }) => {
@@ -129,9 +120,21 @@ function application() {
                 let queryString = "SELECT * from ??"
                 return connection.query(queryString, search)
             },
+            //    "View a Role":
+            getRole: async(search) => {
+                let queryString = "SELECT title FROM Role WHERE ?";
+                return connection.query(queryString, [
+                    { id: search }
+                ]);
+            },
             //    "Add Role":
-            postNewRole: async() => {
-
+            postNewRole: async({ roleName, salary, departmentId }) => {
+                let queryString = "INSERT INTO role SET ?";
+                return connection.query(queryString, {
+                    title: roleName,
+                    salary: salary,
+                    department_id: departmentId
+                });
             },
             //    "Remove Role":
             deleteRole: async({ roleId }) => {
@@ -142,8 +145,8 @@ function application() {
             },
             //    "View Department Utilized Budget":
             getDepartmentUsedBudget: async() => {
-                let queryString = "SELECT d.name, SUM(salary) AS utilized_budget FROM department d"
-                queryString += "LEFT JOIN role r ON r.department_id = d.id GROUP BY d.name;";
+                let queryString = "SELECT department.name, SUM(salary) AS utilized_budget FROM department "
+                queryString += "LEFT JOIN role ON role.department_id = department.id GROUP BY department.name;";
                 return connection.query(queryString);
             },
         }
@@ -151,7 +154,6 @@ function application() {
         let runApplication = true;
 
         while (runApplication) {
-
 
             const {
                 doSomething
@@ -270,7 +272,6 @@ function application() {
                         console.log(`WELCOME to the Team - ${answers.firstName} ${answers.lastName}!`)
                         console.log("------------------------------------------------------------------------------------");
                         break;
-
                     }
                 case "Remove Employee":
                     {
@@ -283,7 +284,7 @@ function application() {
                         }, ])
                         const removeEmp = await queries.deleteEmployee(answers);
                         console.log("------------------------------------------------------------------------------------");
-                        console.table(`${removeEmp} was removed successfully.`);
+                        console.table(`Employee was removed successfully.`);
                         console.log("------------------------------------------------------------------------------------");
                         break;
                     }
@@ -305,7 +306,7 @@ function application() {
                         ])
                         const roleUpdate = await queries.updateEmployeeRole(answers);
                         console.log("------------------------------------------------------------------------------------");
-                        console.table(`${first_name} ${last_name} role updated to '${roleUpdate}'`);
+                        console.table('Role updated successfully.');
                         console.log("------------------------------------------------------------------------------------");
                         break;
                     }
@@ -327,7 +328,7 @@ function application() {
                         ]);
                         const managerUpdate = await queries.updateEmployeeManager(answers);
                         console.log("------------------------------------------------------------------------------------");
-                        console.table(`${first_name} ${last_name} role updated to '${managerUpdate}'`);
+                        console.table(`Employee manager updated successfully.`);
                         console.log("------------------------------------------------------------------------------------");
                         break;
                     }
@@ -342,15 +343,16 @@ function application() {
                 case "Add Department":
                     {
                         const depts = await queries.getAllDepartments("department");
+                        console.table(depts)
                         const answers = await inquirer.prompt([{
                             name: "deptName",
                             type: "input",
                             message: "What is the department you would like to add?",
-                            validate: (name) => { for (const dept of depts) { if (dept.name.toLowerCase().split(" ").includes(name.toLowerCase())) { console.log(`\n${name} department already exists`); return false; } } }
+                            // validate: (name) => { for for (const dept of depts) { if (dept.name.toLowerCase().split(" ").includes(name.toLowerCase())) { console.log(`\n${name} department already exists`); return false; } } }
                         }])
                         const newDept = await queries.postNewDepartment(answers)
                         console.log("------------------------------------------------------------------------------------");
-                        console.table(`A department "${newDept}" was added successfully!`);
+                        console.table(`Department "${answers.deptName}" was added successfully!`);
                         console.log("------------------------------------------------------------------------------------");
                         break;
                     }
@@ -363,9 +365,11 @@ function application() {
                             message: "Choose the department you would like to delete",
                             choices: departments.map(({ id, name }) => ({ name: name, value: id }))
                         }, ]);
+                        const removedDept = await queries.getDepartment(answers.deptId)
+                        dept = JSON.parse(JSON.stringify(removedDept[0].name))
                         const removeDept = await queries.deleteDepartment(answers);
                         console.log("------------------------------------------------------------------------------------");
-                        console.table(`Department "${removeDept}" has been removed successfully.`);
+                        console.table(`Department "${dept}" has been removed successfully.`);
                         console.log("------------------------------------------------------------------------------------");
                         break;
                     }
@@ -381,6 +385,7 @@ function application() {
                     {
                         const departments = await queries.getAllDepartments("department");
                         const roles = await queries.getAllRoles("role");
+                        console.table(roles)
                         const answers = await inquirer.prompt([{
                                 name: "departmentId",
                                 type: "list",
@@ -391,7 +396,7 @@ function application() {
                                 name: "roleName",
                                 type: "input",
                                 message: "What is the role you would like to add?",
-                                validate: (name) => { for (const role of roles) { if (role.title.toLowerCase().split(" ").includes(name.toLowerCase())) { console.log(`\n${name} role already exists`); return false; } } }
+                                // validate: (name) => { for (const role of roles) { if (role.title.toLowerCase().split(" ").includes(name.toLowerCase())) { console.log(`\n${name} role already exists`); return false; } } }
                             },
                             {
                                 name: "salary",
@@ -402,7 +407,7 @@ function application() {
                         ])
                         const newRole = await queries.postNewRole(answers);
                         console.log("------------------------------------------------------------------------------------");
-                        term.bgBlue.bold.black(`A role "${newRole}" has been added successfully!`);
+                        console.table(`Role "${answers.roleName}" has been added successfully!`);
                         console.log("------------------------------------------------------------------------------------");
 
                         break;
@@ -416,15 +421,17 @@ function application() {
                             message: "Choose the role you would like to delete",
                             choices: roles.map(({ id, title }) => ({ name: title, value: id }))
                         }, ]);
+                        const removedRole = await queries.getRole(answers.roleId)
+                        role = JSON.parse(JSON.stringify(removedRole[0].title))
                         const removeRole = await queries.deleteRole(answers);
                         console.log("------------------------------------------------------------------------------------");
-                        console.table(`Role "${removeRole}" was removed successfully.`);
+                        console.table(`Role "${role}" was removed successfully.`);
                         console.log("------------------------------------------------------------------------------------");
                         break;
                     }
                 case "View Department Utilized Budget":
                     {
-                        const viewBudget = await db.viewDeptBudget();
+                        const viewBudget = await queries.getDepartmentUsedBudget();
                         console.log("------------------------------------------------------------------------------------");
                         console.table(viewBudget);
                         console.log("------------------------------------------------------------------------------------");
@@ -441,36 +448,7 @@ function application() {
                     {
                         break
                     }
-                    // }
-                    // if (runApplication) {
-                    //     init();
-                    // } else {
-                    //     connecion.end()
-                    // };
             }
         }
-
     })();
-
 }
-
-
-
-
-
-
-// viewAllEmployees
-
-// SELECT e.id, e.first_name, e.last_name,
-//     r.title, d.name as department, r.salary,
-//     CONCAT(m.first_name, ' ', m.last_name) AS manager
-// FROM employee e
-// LEFT JOIN role r ON r.id = e.role_id
-// LEFT JOIN department d ON d.id = r.department_id
-// LEFT JOIN employee m ON m.id = e.manager_id
-// ORDER BY d.id
-
-// app.listen(PORT, function() {
-//     // Log (server-side) when our server has started
-//     console.log("Server listening on: http://localhost:" + PORT);
-// });
