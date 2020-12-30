@@ -1,6 +1,6 @@
 # MySQL Employee Tracker
 
-[![github-follow](https://img.shields.io/github/followers/jdhprogrammer?label=Follow&logoColor=purple&style=social)](https://github.com/jdhprogrammer) [![project-languages-used](https://img.shields.io/github/languages/count/jdhprogrammer/https://github.com/jdhprogrammer/MySQL_Employee_Tracker?color=important)](https://github.com/jdhprogrammer/https://github.com/jdhprogrammer/MySQL_Employee_Tracker) [![project-top-language](https://img.shields.io/github/languages/top/jdhprogrammer/https://github.com/jdhprogrammer/MySQL_Employee_Tracker?color=blueviolet)](https://github.com/jdhprogrammer/https://github.com/jdhprogrammer/MySQL_Employee_Tracker) [![license](https://img.shields.io/badge/License-mit-brightgreen.svg)](https://choosealicense.com/licenses/mit/)
+[![github-follow](https://img.shields.io/github/followers/jdhprogrammer?label=Follow&logoColor=purple&style=social)](https://github.com/jdhprogrammer) [![project-languages-used](https://img.shields.io/github/languages/count/jdhprogrammer/MySQL_Employee_Tracker?color=important)](https://github.com/jdhprogrammer/https://github.com/jdhprogrammer/MySQL_Employee_Tracker) [![project-top-language](https://img.shields.io/github/languages/top/jdhprogrammer/MySQL_Employee_Tracker?color=blueviolet)](https://github.com/jdhprogrammer/https://github.com/jdhprogrammer/MySQL_Employee_Tracker) [![license](https://img.shields.io/badge/License-mit-brightgreen.svg)](https://choosealicense.com/licenses/mit/)
 
 ## Developer
 
