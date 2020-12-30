@@ -37,7 +37,7 @@ Youtube Walkthrough Video: https://youtu.be/09Re4bjbIwA
   
   Animated GIF Demo:
 
-[<img src="./public/assets/images/gifs/JDH_Employee_Tracker.gif?raw=true" height="300"/>](./public/assets/images/gifs/JDH_Employee_Tracker.gif?raw=true)
+[<img src="./public/assets/images/gifs/JDH_Employee_Tracker.gif?raw=true" height="500"/>](./public/assets/images/gifs/JDH_Employee_Tracker.gif?raw=true)
 
 ### Description
 
@@ -97,19 +97,19 @@ Any contributions you make are **greatly appreciated**.
 
 
   Welcome to: Employee Tracker  
-[<img src="./public/assets/images/screenshots/Welcome_Employee_Tracker.jpeg?raw=true" height="300"/>](./public/assets/images/screenshots/Welcome_Employee_Tracker.jpeg?raw=true)
+[<img src="./public/assets/images/screenshots/Welcome_Employee_Tracker.jpeg?raw=true" height="400"/>](./public/assets/images/screenshots/Welcome_Employee_Tracker.jpeg?raw=true)
 
   MySQL Seeds and Schema Queries  
-[<img src="./public/assets/images/screenshots/MySQL_seeds_schema.jpeg?raw=true" height="300"/>](./public/assets/images/screenshots/MySQL_seeds_schema.jpeg?raw=true)
+[<img src="./public/assets/images/screenshots/MySQL_seeds_schema.jpeg?raw=true" height="400"/>](./public/assets/images/screenshots/MySQL_seeds_schema.jpeg?raw=true)
 
   MySQL data in MySQL Workbench  
 [<img src="./public/assets/images/screenshots/MySQL_data.jpeg?raw=true" height="300"/>](./public/assets/images/screenshots/MySQL_data.jpeg?raw=true)
 
   View Employees By Manager & View All Departments  
-[<img src="./public/assets/images/screenshots/ViewbyManager_ViewDepartments.jpeg?raw=true" height="300"/>](./public/assets/images/screenshots/ViewbyManager_ViewDepartments.jpeg?raw=true)
+[<img src="./public/assets/images/screenshots/ViewbyManager_ViewDepartments.jpeg?raw=true" height="400"/>](./public/assets/images/screenshots/ViewbyManager_ViewDepartments.jpeg?raw=true)
 
   Remove Roles Departments and Employees  
-[<img src="./public/assets/images/screenshots/Employee_Role_Department_removed_Goodbye.jpeg?raw=true" height="300"/>](./public/assets/images/screenshots/Employee_Role_Department_removed_Goodbye.jpeg?raw=true) 
+[<img src="./public/assets/images/screenshots/Employee_Role_Department_removed_Goodbye.jpeg?raw=true" height="400"/>](./public/assets/images/screenshots/Employee_Role_Department_removed_Goodbye.jpeg?raw=true) 
   
 ### Acknowledgements
 
