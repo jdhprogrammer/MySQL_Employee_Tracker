@@ -11,7 +11,7 @@ GitHub: https://github.com/jdhprogrammer
 LinkedIn: https://www.linkedin.com/in/jdhprogrammer/
 <br>
 <br>
-Project Repository: [https://github.com/jdhprogrammer/MySQL_Employee_Tracker](https://github.com/jdhprogrammer/https://github.com/jdhprogrammer/MySQL_Employee_Tracker)  
+Project Repository: [https://github.com/jdhprogrammer/MySQL_Employee_Tracker](https://github.com/jdhprogrammer/MySQL_Employee_Tracker)  
 
 Youtube Walkthrough Video: https://youtu.be/09Re4bjbIwA
 
@@ -131,7 +131,7 @@ Distributed under the [MIT](https://choosealicense.com/licenses/mit/). See LICEN
 
 David Harris - jdh.programmer@gmail.com
 
-Project Link: [https://github.com/jdhprogrammer/https://github.com/jdhprogrammer/MySQL_Employee_Tracker](https://github.com/jdhprogrammer/https://github.com/jdhprogrammer/MySQL_Employee_Tracker)
+Project Link: [https://github.com/jdhprogrammer/MySQL_Employee_Tracker](https://github.com/jdhprogrammer/MySQL_Employee_Tracker)
 
 Youtube Walkthrough Video: https://youtu.be/09Re4bjbIwA<br>
 <br>
